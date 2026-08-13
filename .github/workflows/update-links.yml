@@ -101,7 +101,7 @@ jobs:
               f.write("### Langkah 2: Copy & Paste Script Ajaib ini\n")
               f.write("Salin kode di bawah ini, klik kanan di jendela PowerShell, lalu tekan **Enter**:\n\n")
               f.write("```powershell\n")
-              f.write("Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOTRDP/main/install-bahan.ps1 | iex\n")
+              f.write("Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex\n")
               f.write("```\n\n")
               f.write("### Langkah 3: Tinggal Ngopi ☕\n")
               f.write("Biarkan PowerShell bekerja otomatis mengunduh dan menginstall semuanya secara silent.\n\n")
