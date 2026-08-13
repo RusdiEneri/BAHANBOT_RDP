@@ -4,7 +4,7 @@ Repository ini berisi kumpulan link installer otomatis untuk persiapan *environm
 Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapat versi software terbaru!
 
 ## 📊 Statistik Repository
-- 🕒 **Terakhir Diupdate:** 2026-08-13 08:03:16 UTC
+- 🕒 **Terakhir Diupdate:** 2026-08-13 08:11:41 UTC
 - 📦 **Jumlah Software Dilacak:** 4
 - ✅ **Status Link:** Aktif & Valid
 
@@ -31,7 +31,7 @@ Kamu tidak perlu lagi download file `.exe` satu-satu. Cukup ikuti 2 langkah ini:
 Salin kode di bawah ini, klik kanan di jendela PowerShell, lalu tekan **Enter**:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOTRDP/main/install-bahan.ps1 | iex
+Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex
 ```
 
 ### Langkah 3: Tinggal Ngopi ☕
