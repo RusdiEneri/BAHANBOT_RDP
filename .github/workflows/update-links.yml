@@ -7,7 +7,6 @@ on:
     paths:
       - ".github/workflows/update-links.yml"
 
-# ===== KUNCI PERBAIKAN: kasih izin write ke bot =====
 permissions:
   contents: write
 
@@ -32,6 +31,7 @@ jobs:
           import requests
           import json
           import datetime
+          import re
 
           links = {}
 
@@ -72,6 +72,14 @@ jobs:
                       break
           except Exception as e: print("Error ImageMagick:", e)
 
+          # 5. WinRAR (Scraping dari rarlab.com)
+          try:
+              rar_html = requests.get('https://www.rarlab.com/download.htm').text
+              match = re.search(r'href="(rar/winrar-x64-\d+\.exe)"', rar_html)
+              if match:
+                  links['WinRAR'] = f"https://www.rarlab.com/{match.group(1)}"
+          except Exception as e: print("Error WinRAR:", e)
+
           # Simpan links.json
           with open('links.json', 'w', encoding='utf-8') as f:
               json.dump(links, f, indent=4)
@@ -102,7 +110,6 @@ jobs:
               f.write("## 🚀 Cara Install di RDP Windows (Sangat Mudah!)\n\n")
               f.write("Kamu tidak perlu lagi download file `.exe` satu-satu. Pilih salah satu metode di bawah ini:\n\n")
               
-              # OPSI A: POWERSHELL
               f.write("### 🟦 Metode 1: Menggunakan PowerShell (Disarankan)\n\n")
               f.write("1. Buka **PowerShell** dengan cara klik kanan **Start Menu** lalu pilih **Windows PowerShell (Admin)** atau **Terminal (Admin)**.\n\n")
               f.write("2. Copy & paste kode di bawah ini, lalu tekan **Enter**:\n\n")
@@ -110,16 +117,15 @@ jobs:
               f.write("Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex\n")
               f.write("```\n\n")
 
-              # OPSI B: CMD
               f.write("### ⬛ Metode 2: Menggunakan Command Prompt (CMD)\n\n")
               f.write("1. Buka **Command Prompt** dengan cara klik **Start Menu**, ketik `cmd`, klik kanan lalu pilih **Run as Administrator**.\n\n")
-              f.write("2. Copy & paste kode di bawah ini (perintah ini memanggil PowerShell dari dalam CMD), lalu tekan **Enter**:\n\n")
+              f.write("2. Copy & paste kode di bawah ini, lalu tekan **Enter**:\n\n")
               f.write("```cmd\n")
               f.write("powershell -ExecutionPolicy Bypass -Command \"& { iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex }\"\n")
               f.write("```\n\n")
 
               f.write("### Langkah 3: Tinggal Ngopi ☕\n\n")
-              f.write("Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick) secara *silent* (tanpa perlu ribet klik Next > Next).\n\n")
+              f.write("Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick, WinRAR) secara *silent*.\n\n")
               
               f.write("---\n\n")
               
