@@ -1,0 +1,41 @@
+name: Update Bahan Bot Links
+on:
+  schedule:
+    - cron: '0 0 * * *' # Jalan otomatis setiap hari jam 00:00 UTC
+  workflow_dispatch: # Bisa di-trigger manual dari tab Actions kapan saja
+  push:
+    paths:
+      - ".github/workflows/update-links.yml"
+
+jobs:
+  update-links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Update Script
+        run: python check_updates.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'RusdiEneri'
+          git config --global user.email 'nuruddinrusydiilham@gmail.com'
+          git add links.json
+          
+          # Generate timestamp otomatis (Format: Tahun-Bulan-Tanggal Jam:Menit:Detik UTC)
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          # Commit paksa (--allow-empty) agar tetap commit walau tidak ada perubahan link
+          git commit -m "Update link installer terbaru - $TIMESTAMP [skip ci]" --allow-empty
+          
+          # Push perubahan ke repository
+          git push
