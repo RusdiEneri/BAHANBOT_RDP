@@ -7,6 +7,10 @@ on:
     paths:
       - ".github/workflows/update-links.yml"
 
+# ===== KUNCI PERBAIKAN: kasih izin write ke bot =====
+permissions:
+  contents: write
+
 jobs:
   update-links:
     runs-on: ubuntu-latest
