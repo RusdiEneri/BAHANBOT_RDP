@@ -5,7 +5,7 @@ Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapa
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-08-13 08:19:56 UTC
+- 🕒 **Terakhir Diupdate:** 2026-08-13 08:24:55 UTC
 
 - 📦 **Jumlah Software Dilacak:** 4
 
@@ -40,7 +40,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubus
 
 1. Buka **Command Prompt** dengan cara klik **Start Menu**, ketik `cmd`, klik kanan lalu pilih **Run as Administrator**.
 
-2. Copy & paste kode di bawah ini (perintah ini memanggil PowerShell dari dalam CMD), lalu tekan **Enter**:
+2. Copy & paste kode di bawah ini, lalu tekan **Enter**:
 
 ```cmd
 powershell -ExecutionPolicy Bypass -Command "& { iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex }"
@@ -48,7 +48,7 @@ powershell -ExecutionPolicy Bypass -Command "& { iwr -useb https://raw.githubuse
 
 ### Langkah 3: Tinggal Ngopi ☕
 
-Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick) secara *silent* (tanpa perlu ribet klik Next > Next).
+Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick, WinRAR) secara *silent*.
 
 ---
 
