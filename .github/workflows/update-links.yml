@@ -112,7 +112,7 @@ jobs:
               f.write("---\n\n")
               f.write("<details>\n")
               f.write("<summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>\n\n")
-              f.write("<ul>\n")
+              f.write("<ul>\n\n")
               f.write("<li>Workflow GitHub Actions mencari URL rilis terbaru setiap hari.</li>\n")
               f.write("<li><code>links.json</code>: Database URL link terbaru.</li>\n")
               f.write("<li><code>install-bahan.ps1</code>: Script PowerShell untuk instalasi otomatis di RDP.</li>\n")
