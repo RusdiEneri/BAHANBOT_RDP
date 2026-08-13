@@ -4,11 +4,15 @@ Repository ini berisi kumpulan link installer otomatis untuk persiapan *environm
 Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapat versi software terbaru!
 
 ## 📊 Statistik Repository
-- 🕒 **Terakhir Diupdate:** 2026-08-13 08:15:57 UTC
+
+- 🕒 **Terakhir Diupdate:** 2026-08-13 08:19:56 UTC
+
 - 📦 **Jumlah Software Dilacak:** 4
+
 - ✅ **Status Link:** Aktif & Valid
 
 ### 📦 Daftar Software Otomatis
+
 | Software | Link Download |
 |---|---|
 | NodeJS | [Download Link](https://nodejs.org/dist/v24.19.0/node-v24.19.0-x64.msi) |
@@ -20,35 +24,44 @@ Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapa
 
 ## 🚀 Cara Install di RDP Windows (Sangat Mudah!)
 
-Kamu tidak perlu lagi download file `.exe` satu-satu. Cukup ikuti 2 langkah ini:
+Kamu tidak perlu lagi download file `.exe` satu-satu. Pilih salah satu metode di bawah ini:
 
-### Langkah 1: Buka PowerShell sebagai Administrator
-1. Klik tombol **Start** di Windows.
-2. Ketik **PowerShell**.
-3. Klik kanan pada "Windows PowerShell" lalu pilih **Run as Administrator**.
+### 🟦 Metode 1: Menggunakan PowerShell (Disarankan)
 
-### Langkah 2: Copy & Paste Script Ajaib ini
-Salin kode di bawah ini, klik kanan di jendela PowerShell, lalu tekan **Enter**:
+1. Buka **PowerShell** dengan cara klik kanan **Start Menu** lalu pilih **Windows PowerShell (Admin)** atau **Terminal (Admin)**.
+
+2. Copy & paste kode di bawah ini, lalu tekan **Enter**:
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex
 ```
 
+### ⬛ Metode 2: Menggunakan Command Prompt (CMD)
+
+1. Buka **Command Prompt** dengan cara klik **Start Menu**, ketik `cmd`, klik kanan lalu pilih **Run as Administrator**.
+
+2. Copy & paste kode di bawah ini (perintah ini memanggil PowerShell dari dalam CMD), lalu tekan **Enter**:
+
+```cmd
+powershell -ExecutionPolicy Bypass -Command "& { iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex }"
+```
+
 ### Langkah 3: Tinggal Ngopi ☕
-Biarkan PowerShell bekerja otomatis mengunduh dan menginstall semuanya secara silent.
+
+Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick) secara *silent* (tanpa perlu ribet klik Next > Next).
 
 ---
 
 <details>
 <summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>
 
-<ul>
+- Workflow GitHub Actions mencari URL rilis terbaru setiap hari.
 
-<li>Workflow GitHub Actions mencari URL rilis terbaru setiap hari.</li>
-<li><code>links.json</code>: Database URL link terbaru.</li>
-<li><code>install-bahan.ps1</code>: Script PowerShell untuk instalasi otomatis di RDP.</li>
-<li>README.md ini digenerate secara otomatis oleh GitHub Actions.</li>
-</ul>
+- `links.json`: Database URL link terbaru.
+
+- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis di RDP.
+
+- README.md ini digenerate secara otomatis oleh GitHub Actions.
 
 </details>
 
