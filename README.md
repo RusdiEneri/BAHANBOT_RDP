@@ -4,7 +4,7 @@ Repository ini berisi kumpulan link installer otomatis untuk persiapan *environm
 Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapat versi software terbaru!
 
 ## 📊 Statistik Repository
-- 🕒 **Terakhir Diupdate:** 2026-08-13 08:11:41 UTC
+- 🕒 **Terakhir Diupdate:** 2026-08-13 08:14:37 UTC
 - 📦 **Jumlah Software Dilacak:** 4
 - ✅ **Status Link:** Aktif & Valid
 
@@ -41,11 +41,14 @@ Biarkan PowerShell bekerja otomatis mengunduh dan menginstall semuanya secara si
 
 <details>
 <summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>
-<br>
-- Workflow GitHub Actions mencari URL rilis terbaru setiap hari.
-- `links.json`: Database URL link terbaru.
-- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis di RDP.
-- README.md ini digenerate secara otomatis oleh GitHub Actions.
+
+<ul>
+<li>Workflow GitHub Actions mencari URL rilis terbaru setiap hari.</li>
+<li><code>links.json</code>: Database URL link terbaru.</li>
+<li><code>install-bahan.ps1</code>: Script PowerShell untuk instalasi otomatis di RDP.</li>
+<li>README.md ini digenerate secara otomatis oleh GitHub Actions.</li>
+</ul>
+
 </details>
 
 ---
