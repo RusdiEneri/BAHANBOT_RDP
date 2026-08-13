@@ -17,7 +17,7 @@ New-Item -ItemType Directory -Force -Path $tempDir | Out-Null
 
 # 1. Download links.json dari repository
 Write-Host "[1/5] Mengambil daftar link terbaru dari GitHub..." -ForegroundColor Yellow
-$linksUrl = "https://raw.githubusercontent.com/RusdiEneri/BAHANBOTRDP/main/links.json"
+$linksUrl = "https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/links.json"
 $linksFile = "$tempDir\links.json"
 
 try {
