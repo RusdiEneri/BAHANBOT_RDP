@@ -34,6 +34,7 @@ jobs:
           import re
 
           links = {}
+          headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
 
           # 1. Node.js
           try:
@@ -72,13 +73,24 @@ jobs:
                       break
           except Exception as e: print("Error ImageMagick:", e)
 
-          # 5. WinRAR (Scraping dari rarlab.com)
+          # 5. WinRAR (Scraping fleksibel + User-Agent browser)
           try:
-              rar_html = requests.get('https://www.rarlab.com/download.htm').text
-              match = re.search(r'href="(rar/winrar-x64-\d+\.exe)"', rar_html)
+              rar_html = requests.get('https://www.rarlab.com/download.htm', headers=headers, timeout=30).text
+              match = re.search(r'winrar-x64-(\d+)\.exe', rar_html)
               if match:
-                  links['WinRAR'] = f"https://www.rarlab.com/{match.group(1)}"
-          except Exception as e: print("Error WinRAR:", e)
+                  links['WinRAR'] = f"https://www.rarlab.com/rar/winrar-x64-{match.group(1)}.exe"
+          except Exception as e: print("Error WinRAR scrape:", e)
+
+          # 5b. WinRAR FALLBACK (via API Chocolatey jika scraping gagal)
+          if 'WinRAR' not in links:
+              try:
+                  choco = requests.get("https://community.chocolatey.org/api/v2/Packages?$filter=Id eq 'winrar' and IsLatestVersion eq true", headers=headers, timeout=30).text
+                  vmatch = re.search(r'<d:Version>(\d+)\.(\d+)', choco)
+                  if vmatch:
+                      num = int(vmatch.group(1)) * 100 + int(vmatch.group(2))
+                      links['WinRAR'] = f"https://www.rarlab.com/rar/winrar-x64-{num}.exe"
+                      print("WinRAR didapat dari fallback Chocolatey")
+              except Exception as e: print("Error WinRAR fallback:", e)
 
           # Simpan links.json
           with open('links.json', 'w', encoding='utf-8') as f:
