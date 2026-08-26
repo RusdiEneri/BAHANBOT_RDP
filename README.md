@@ -5,7 +5,7 @@ Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapa
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-08-26 13:00:25 UTC
+- 🕒 **Terakhir Diupdate:** 2026-08-26 14:49:24 UTC
 
 - 📦 **Jumlah Software Dilacak:** 5
 
@@ -15,7 +15,7 @@ Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapa
 
 | Software | Link Download |
 |---|---|
-| NodeJS | [Download Link](https://nodejs.org/dist/v24.19.0/node-v24.19.0-x64.msi) |
+| NodeJS | [Download Link](https://nodejs.org/dist/v24.20.0/node-v24.20.0-x64.msi) |
 | Git | [Download Link](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe) |
 | FFmpeg | [Download Link](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
 | ImageMagick | [Download Link](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-30/ImageMagick-7.1.2-30-Q16-HDRI-x64-dll.exe) |
