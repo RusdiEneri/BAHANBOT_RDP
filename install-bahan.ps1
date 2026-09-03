@@ -4,6 +4,7 @@
 # mendownload + menginstall semua bahan bot secara silent.
 # ============================================================
 
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $ErrorActionPreference = "Stop"
 $tempDir = "$env:TEMP\bahanbot"
 
@@ -69,8 +70,11 @@ if ($links.FFmpeg) {
         $ffBinPath = Get-ChildItem -Path $ffInstallDir -Directory | Select-Object -First 1 | ForEach-Object { Join-Path $_.FullName "bin" }
         if ($ffBinPath -and (Test-Path $ffBinPath)) {
             $currentPath = [Environment]::GetEnvironmentVariable("Path", "Machine")
-            if ($currentPath -notlike "*$ffBinPath*") {
+            if ($currentPath -notlike "*ffmpeg*") {
                 [Environment]::SetEnvironmentVariable("Path", "$currentPath;$ffBinPath", "Machine")
+                Write-Host "  -> FFmpeg berhasil ditambahkan ke PATH!" -ForegroundColor Green
+            } else {
+                Write-Host "  -> FFmpeg sudah ada di PATH (Skip)." -ForegroundColor Yellow
             }
             Write-Host "  -> FFmpeg berhasil diextract dan ditambahkan ke PATH!" -ForegroundColor Green
         }

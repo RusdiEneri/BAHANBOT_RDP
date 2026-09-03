@@ -97,7 +97,7 @@ jobs:
               json.dump(links, f, indent=4)
 
           # Generate README.md
-          timestamp = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
           num_links = len(links)
           table_rows = ""
           for name, url in links.items():
@@ -133,7 +133,7 @@ jobs:
               f.write("1. Buka **Command Prompt** dengan cara klik **Start Menu**, ketik `cmd`, klik kanan lalu pilih **Run as Administrator**.\n\n")
               f.write("2. Copy & paste kode di bawah ini, lalu tekan **Enter**:\n\n")
               f.write("```cmd\n")
-              f.write("powershell -ExecutionPolicy Bypass -Command \"& { iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex }\"\n")
+              f.write("powershell -Command \"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1' -OutFile '%TEMP%\\install-bahan.ps1'; powershell -ExecutionPolicy Bypass -File '%TEMP%\\install-bahan.ps1'\"\n")
               f.write("```\n\n")
 
               f.write("### Langkah 3: Tinggal Ngopi ☕\n\n")
