@@ -5,7 +5,7 @@ Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapa
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-09-03 08:46:30 UTC
+- 🕒 **Terakhir Diupdate:** 2026-09-03 09:34:34 UTC
 
 - 📦 **Jumlah Software Dilacak:** 5
 
@@ -44,7 +44,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubus
 2. Copy & paste kode di bawah ini, lalu tekan **Enter**:
 
 ```cmd
-powershell -ExecutionPolicy Bypass -Command "& { iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex }"
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1' -OutFile '%TEMP%\install-bahan.ps1'; powershell -ExecutionPolicy Bypass -File '%TEMP%\install-bahan.ps1'"
 ```
 
 ### Langkah 3: Tinggal Ngopi ☕
