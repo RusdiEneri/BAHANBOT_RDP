@@ -1,7 +1,16 @@
 {
     "NodeJS": "https://nodejs.org/dist/v24.20.0/node-v24.20.0-x64.msi",
+    "Python": "https://www.python.org/ftp/python/3.14.7/python-3.14.7-amd64.exe",
+    "Go": "https://go.dev/dl/go1.27.1.windows-amd64.msi",
     "Git": "https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe",
     "FFmpeg": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip",
     "ImageMagick": "https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-31/ImageMagick-7.1.2-31-Q16-HDRI-x64-dll.exe",
-    "WinRAR": "https://www.rarlab.com/rar/winrar-x64-723.exe"
+    "VSCode": "https://update.code.visualstudio.com/latest/win32-x64-user/stable",
+    "DockerDesktop": "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe",
+    "WinRAR": "https://www.rarlab.com/rar/winrar-x64-723.exe",
+    "Chocolatey": "https://community.chocolatey.org/install.ps1",
+    "Postman": "https://dl.pstmn.io/download/latest/win64",
+    "7Zip": "https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.02/7z2602-x64.exe",
+    "ngrok": "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip",
+    "Cloudflared": "https://github.com/cloudflare/cloudflared/releases/download/2026.8.3/cloudflared-windows-amd64.msi"
 }

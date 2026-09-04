@@ -1,68 +1,82 @@
-# 🤖 BAHAN BOT RDP (Auto Installer)
+# 🤖 BAHAN BOT RDP - ULTIMATE EDITION (Auto Installer)
 
-Repository ini berisi kumpulan link installer otomatis untuk persiapan *environment* Bot WhatsApp di RDP Windows.
-Link di sini selalu diperbarui otomatis oleh sistem sehingga kamu selalu mendapat versi software terbaru!
+Repository berisi kumpulan link installer otomatis untuk persiapan *environment* Bot WhatsApp multi-bahasa di RDP Windows.
+Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-09-03 23:06:48 UTC
+- 🕒 **Terakhir Diupdate:** 2026-09-04 00:56:38 UTC
 
-- 📦 **Jumlah Software Dilacak:** 5
+- 📦 **Jumlah Software Dilacak:** 14
 
 - ✅ **Status Link:** Aktif & Valid
+
+## 🌟 Fitur Unggulan
+
+- ✅ **Multi-Bahasa:** Node.js, Python, Go, Rust, Java, PHP, Ruby
+- ✅ **Database:** MongoDB, Redis
+- ✅ **Development Tools:** VS Code, Git, Postman, Docker
+- ✅ **Utilities:** FFmpeg, ImageMagick, WinRAR, 7-Zip
+- ✅ **Tunneling:** ngrok, Cloudflared
+- ✅ **Package Manager:** Chocolatey
 
 ### 📦 Daftar Software Otomatis
 
 | Software | Link Download |
 |---|---|
-| NodeJS | [Download Link](https://nodejs.org/dist/v24.20.0/node-v24.20.0-x64.msi) |
-| Git | [Download Link](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe) |
-| FFmpeg | [Download Link](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
-| ImageMagick | [Download Link](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-31/ImageMagick-7.1.2-31-Q16-HDRI-x64-dll.exe) |
-| WinRAR | [Download Link](https://www.rarlab.com/rar/winrar-x64-723.exe) |
+| NodeJS | [Download](https://nodejs.org/dist/v24.20.0/node-v24.20.0-x64.msi) |
+| Python | [Download](https://www.python.org/ftp/python/3.14.7/python-3.14.7-amd64.exe) |
+| Go | [Download](https://go.dev/dl/go1.27.1.windows-amd64.msi) |
+| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe) |
+| FFmpeg | [Download](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
+| ImageMagick | [Download](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-31/ImageMagick-7.1.2-31-Q16-HDRI-x64-dll.exe) |
+| VSCode | [Download](https://update.code.visualstudio.com/latest/win32-x64-user/stable) |
+| DockerDesktop | [Download](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) |
+| WinRAR | [Download](https://www.rarlab.com/rar/winrar-x64-723.exe) |
+| Chocolatey | [Download](https://community.chocolatey.org/install.ps1) |
+| Postman | [Download](https://dl.pstmn.io/download/latest/win64) |
+| 7Zip | [Download](https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.02/7z2602-x64.exe) |
+| ngrok | [Download](https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip) |
+| Cloudflared | [Download](https://github.com/cloudflare/cloudflared/releases/download/2026.8.3/cloudflared-windows-amd64.msi) |
 
 ---
 
-## 🚀 Cara Install di RDP Windows (Sangat Mudah!)
+## 🚀 Cara Install di RDP Windows
 
-Kamu tidak perlu lagi download file `.exe` satu-satu. Pilih salah satu metode di bawah ini:
-
-### 🟦 Metode 1: Menggunakan PowerShell (Disarankan)
-
-1. Buka **PowerShell** dengan cara klik kanan **Start Menu** lalu pilih **Windows PowerShell (Admin)** atau **Terminal (Admin)**.
-
-2. Copy & paste kode di bawah ini, lalu tekan **Enter**:
+### 🟦 Metode 1: PowerShell (Disarankan)
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex
 ```
 
-### ⬛ Metode 2: Menggunakan Command Prompt (CMD)
-
-1. Buka **Command Prompt** dengan cara klik **Start Menu**, ketik `cmd`, klik kanan lalu pilih **Run as Administrator**.
-
-2. Copy & paste kode di bawah ini, lalu tekan **Enter**:
+### ⬛ Metode 2: Command Prompt (CMD)
 
 ```cmd
 powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1' -OutFile '%TEMP%\install-bahan.ps1'; powershell -ExecutionPolicy Bypass -File '%TEMP%\install-bahan.ps1'"
 ```
 
-### Langkah 3: Tinggal Ngopi ☕
+### Metode 3: Pilih Manual (Untuk Developer)
 
-Biarkan sistem bekerja otomatis mengunduh dan menginstall semuanya (Node.js, Git, FFmpeg, ImageMagick, WinRAR) secara *silent*.
+Download langsung dari tabel di atas sesuai kebutuhan:
+
+1. **Bot Python (Telegram/WhatsApp):** Install Python + Git
+2. **Bot Node.js (Baileys/WhatsApp):** Install Node.js + Git
+3. **Bot Go (High Performance):** Install Go + Git
+4. **Bot Java (Enterprise):** Install Java + Git
+5. **Bot PHP:** Install PHP + Composer
 
 ---
 
 <details>
 <summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>
 
-- Workflow GitHub Actions mencari URL rilis terbaru setiap hari.
+- Workflow GitHub Actions mencari URL rilis terbaru setiap 6 jam.
 
 - `links.json`: Database URL link terbaru.
 
-- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis di RDP.
+- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis.
 
-- README.md ini digenerate secara otomatis oleh GitHub Actions.
+- README.md digenerate otomatis oleh GitHub Actions.
 
 </details>
 
