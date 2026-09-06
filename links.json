@@ -11,5 +11,6 @@
     "Chocolatey": "https://community.chocolatey.org/install.ps1",
     "Postman": "https://dl.pstmn.io/download/latest/win64",
     "7Zip": "https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.03/7z2603-x64.exe",
-    "ngrok": "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip"
+    "ngrok": "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip",
+    "Cloudflared": "https://github.com/cloudflare/cloudflared/releases/download/2026.8.3/cloudflared-windows-amd64.msi"
 }
