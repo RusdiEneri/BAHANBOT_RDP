@@ -19,10 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
@@ -289,4 +289,17 @@ jobs:
           git add links.json README.md
           TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           git commit -m "Update link & Statistik README - $TIMESTAMP [skip ci]" --allow-empty
+          
+          # Ambil nama branch saat ini, fallback ke 'main' jika kosong
+          BRANCH=$(git branch --show-current)
+          if [ -z "$BRANCH" ]; then BRANCH="main"; fi
+          
+          # Tarik perubahan terbaru dari remote. Jika ada konflik, paksa gunakan file hasil generate
+          if ! git pull --rebase origin $BRANCH; then
+            echo "Konflik terdeteksi, menggunakan file hasil generate..."
+            git checkout --theirs links.json README.md || true
+            git add links.json README.md
+            GIT_EDITOR=true git rebase --continue
+          fi
+          
           git push
