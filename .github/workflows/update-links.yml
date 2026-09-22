@@ -133,9 +133,7 @@ jobs:
           except Exception as e: print("Error ImageMagick:", e)
 
           # 11. Visual Studio Code
-          try:
-              links['VSCode'] = "https://update.code.visualstudio.com/latest/win32-x64-user/stable"
-          except Exception as e: print("Error VS Code:", e)
+          links['VSCode'] = "https://update.code.visualstudio.com/latest/win32-x64-user/stable"
 
           # 12. MongoDB (Community Server)
           try:
@@ -156,9 +154,7 @@ jobs:
           except Exception as e: print("Error Redis:", e)
 
           # 14. Docker Desktop
-          try:
-              links['DockerDesktop'] = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
-          except Exception as e: print("Error Docker:", e)
+          links['DockerDesktop'] = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
 
           # 15. WinRAR (Scraping fleksibel)
           try:
@@ -179,14 +175,10 @@ jobs:
               except Exception as e: print("Error WinRAR fallback:", e)
 
           # 16. Chocolatey
-          try:
-              links['Chocolatey'] = "https://community.chocolatey.org/install.ps1"
-          except Exception as e: print("Error Chocolatey:", e)
+          links['Chocolatey'] = "https://community.chocolatey.org/install.ps1"
 
           # 17. Postman
-          try:
-              links['Postman'] = "https://dl.pstmn.io/download/latest/win64"
-          except Exception as e: print("Error Postman:", e)
+          links['Postman'] = "https://dl.pstmn.io/download/latest/win64"
 
           # 18. 7-Zip
           try:
@@ -197,9 +189,7 @@ jobs:
           except Exception as e: print("Error 7-Zip:", e)
 
           # 19. ngrok
-          try:
-              links['ngrok'] = "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip"
-          except Exception as e: print("Error ngrok:", e)
+          links['ngrok'] = "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip"
 
           # 20. Cloudflared
           try:
@@ -269,7 +259,7 @@ jobs:
               
               f.write("<details>\n")
               f.write("<summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>\n\n")
-              f.write("- Workflow GitHub Actions mencari URL rilis terbaru setiap 6 jam.\n\n")
+              f.write("- Workflow GitHub Actions mencari URL rilis terbaru setiap jam.\n\n")
               f.write("- `links.json`: Database URL link terbaru.\n\n")
               f.write("- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis.\n\n")
               f.write("- README.md digenerate otomatis oleh GitHub Actions.\n\n")
@@ -297,7 +287,7 @@ jobs:
           # Tarik perubahan terbaru dari remote. Jika ada konflik, paksa gunakan file hasil generate
           if ! git pull --rebase origin $BRANCH; then
             echo "Konflik terdeteksi, menggunakan file hasil generate..."
-            git checkout --theirs links.json README.md || true
+            git checkout --ours links.json README.md || true
             git add links.json README.md
             GIT_EDITOR=true git rebase --continue
           fi
