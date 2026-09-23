@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-09-22 09:43:46 UTC
+- 🕒 **Terakhir Diupdate:** 2026-09-23 23:55:22 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -70,7 +70,7 @@ Download langsung dari tabel di atas sesuai kebutuhan:
 <details>
 <summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>
 
-- Workflow GitHub Actions mencari URL rilis terbaru setiap 6 jam.
+- Workflow GitHub Actions mencari URL rilis terbaru setiap jam.
 
 - `links.json`: Database URL link terbaru.
 
