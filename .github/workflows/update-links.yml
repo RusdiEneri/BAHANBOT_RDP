@@ -1,8 +1,7 @@
 name: Update Bahan Bot Links
 on:
   schedule:
-    - cron: '0 */12 * * *'
-      timezone: 'Asia/Jakarta'
+    - cron: '0 * * * *'
   workflow_dispatch:
   push:
     paths:
