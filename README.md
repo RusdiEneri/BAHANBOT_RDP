@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-09-28 18:29:41 UTC
+- 🕒 **Terakhir Diupdate:** 2026-09-28 23:44:10 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -27,7 +27,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | NodeJS | [Download](https://nodejs.org/dist/v24.21.0/node-v24.21.0-x64.msi) |
 | Python | [Download](https://www.python.org/ftp/python/3.14.7/python-3.14.7-amd64.exe) |
 | Go | [Download](https://go.dev/dl/go1.27.1.windows-amd64.msi) |
-| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.5/Git-2.55.0.5-64-bit.exe) |
+| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.1/Git-2.56.0-64-bit.exe) |
 | FFmpeg | [Download](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
 | ImageMagick | [Download](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-32/ImageMagick-7.1.2-32-Q16-HDRI-x64-dll.exe) |
 | VSCode | [Download](https://update.code.visualstudio.com/latest/win32-x64-user/stable) |
