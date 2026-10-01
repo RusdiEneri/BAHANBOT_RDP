@@ -1,6 +1,6 @@
 {
     "NodeJS": "https://nodejs.org/dist/v24.21.0/node-v24.21.0-x64.msi",
-    "Python": "https://www.python.org/ftp/python/3.14.7/python-3.14.7-amd64.exe",
+    "Python": "https://www.python.org/ftp/python/3.14.8/python-3.14.8-amd64.exe",
     "Go": "https://go.dev/dl/go1.27.1.windows-amd64.msi",
     "Git": "https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.1/Git-2.56.0-64-bit.exe",
     "FFmpeg": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip",
