@@ -1,8 +1,11 @@
-name: Update Bahan Bot Links
+name: "Update Bahan Bot Links"
+
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: "0 * * * *"
+
   workflow_dispatch:
+
   push:
     paths:
       - ".github/workflows/update-links.yml"
@@ -17,279 +20,748 @@ concurrency:
 jobs:
   update-links:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+    timeout-minutes: 20
 
-      - name: Setup Python
+    steps:
+      - name: "Checkout Repo"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+
+      - name: "Setup Python"
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Install Dependencies
-        run: pip install requests
-
-      - name: Generate Links & README (All in One)
+      - name: "Install Dependencies"
+        shell: bash
         run: |
-          cat > generate.py << 'PYEOF'
-          import requests
-          import json
-          import datetime
-          import re
+          set -Eeuo pipefail
+          python -m pip install --upgrade pip
+          pip install requests
 
-          links = {}
-          headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+      - name: "Sync Repository"
+        shell: bash
+        run: |
+          set -Eeuo pipefail
 
-          # ========== BAHASA PEMROGRAMAN POPULER ==========
-          
-          # 1. Node.js
-          try:
-              node_res = requests.get('https://nodejs.org/dist/index.json', headers=headers).json()
-              for node in node_res:
-                  if node['lts']:
-                      version = node['version']
-                      links['NodeJS'] = f"https://nodejs.org/dist/{version}/node-{version}-x64.msi"
-                      break
-          except Exception as e: print("Error Nodejs:", e)
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
 
-          # 2. Python
-          try:
-              py_res = requests.get('https://endoflife.date/api/python.json', headers=headers).json()
-              for version in py_res:
-                  if version['latest']:
-                      py_version = version['latest']
-                      links['Python'] = f"https://www.python.org/ftp/python/{py_version}/python-{py_version}-amd64.exe"
-                      break
-          except Exception as e: print("Error Python:", e)
+          echo "✅ Repository synchronized with origin/main."
 
-          # 3. Go
-          try:
-              go_res = requests.get('https://go.dev/VERSION?m=text', headers=headers).text.strip()
-              go_version = go_res.split()[0]
-              links['Go'] = f"https://go.dev/dl/{go_version}.windows-amd64.msi"
-          except Exception as e: print("Error Go:", e)
+      - name: "Generate Links & README"
+        shell: bash
+        run: |
+          set -Eeuo pipefail
 
-          # 4. Rust
-          try:
-              rust_res = requests.get('https://api.github.com/repos/rust-lang/rust/releases/latest', headers=headers).json()
-              for asset in rust_res.get('assets', []):
-                  if 'x86_64-pc-windows-msvc.msi' in asset['name']:
-                      links['Rust'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error Rust:", e)
+          cat > generate.py <<'PYEOF'
+import requests
+import json
+import datetime
+import re
 
-          # 5. Java (Eclipse Temurin / Adoptium)
-          try:
-              java_res = requests.get('https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=x64&image_type=jdk&os=windows&vendor=eclipse', headers=headers).json()
-              for item in java_res:
-                  if 'msi' in item['binary']['package']['name']:
-                      links['JavaJDK'] = item['binary']['package']['link']
-                      break
-          except Exception as e: print("Error Java:", e)
+links = {}
 
-          # 6. PHP
-          try:
-              php_html = requests.get('https://windows.php.net/download/', headers=headers, timeout=30).text
-              php_match = re.search(r'VS16\s*x64\s*Thread Safe.*?href="(.*?\.zip)"', php_html, re.DOTALL)
-              if php_match:
-                  links['PHP'] = f"https://windows.php.net{php_match.group(1)}"
-          except Exception as e: print("Error PHP:", e)
+headers = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36"
+    )
+}
 
-          # 7. Ruby - FIXED (sebelumnya pakai ruby_html yang tidak ada)
-          try:
-              ruby_html = requests.get('https://rubyinstaller.org/downloads/', headers=headers, timeout=30).text
-              ruby_match = re.search(r'href="(.*?rubyinstaller-(\d+\.\d+\.\d+)-x64\.exe)"', ruby_html)
-              if ruby_match:
-                  links['Ruby'] = ruby_match.group(1)
-          except Exception as e: print("Error Ruby:", e)
+# ========== BAHASA PEMROGRAMAN POPULER ==========
 
-          # ========== TOOL BOT DEVELOPMENT ==========
+# 1. Node.js
+try:
+    node_res = requests.get(
+        "https://nodejs.org/dist/index.json",
+        headers=headers,
+        timeout=30,
+    ).json()
 
-          # 8. Git for Windows
-          try:
-              git_res = requests.get('https://api.github.com/repos/git-for-windows/git/releases/latest', headers=headers).json()
-              for asset in git_res.get('assets', []):
-                  if '64-bit.exe' in asset['name']:
-                      links['Git'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error Git:", e)
+    for node in node_res:
+        if node["lts"]:
+            version = node["version"]
+            links["NodeJS"] = (
+                f"https://nodejs.org/dist/{version}/"
+                f"node-{version}-x64.msi"
+            )
+            break
 
-          # 9. FFmpeg
-          try:
-              ff_res = requests.get('https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest', headers=headers).json()
-              for asset in ff_res.get('assets', []):
-                  if 'win64-gpl' in asset['name'] and asset['name'].endswith('.zip'):
-                      links['FFmpeg'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error FFmpeg:", e)
+except Exception as e:
+    print("Error NodeJS:", e)
 
-          # 10. ImageMagick
-          try:
-              img_res = requests.get('https://api.github.com/repos/ImageMagick/ImageMagick/releases/latest', headers=headers).json()
-              for asset in img_res.get('assets', []):
-                  if 'Q16-HDRI-x64-dll.exe' in asset['name']:
-                      links['ImageMagick'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error ImageMagick:", e)
 
-          # 11. Visual Studio Code
-          links['VSCode'] = "https://update.code.visualstudio.com/latest/win32-x64-user/stable"
+# 2. Python
+try:
+    py_res = requests.get(
+        "https://endoflife.date/api/python.json",
+        headers=headers,
+        timeout=30,
+    ).json()
 
-          # 12. MongoDB (Community Server)
-          try:
-              mongo_res = requests.get('https://api.github.com/repos/mongodb/mongo/releases/latest', headers=headers).json()
-              for asset in mongo_res.get('assets', []):
-                  if 'windows-x86_64' in asset['name'] and asset['name'].endswith('.zip'):
-                      links['MongoDB'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error MongoDB:", e)
+    for version in py_res:
+        if version["latest"]:
+            py_version = version["latest"]
+            links["Python"] = (
+                f"https://www.python.org/ftp/python/{py_version}/"
+                f"python-{py_version}-amd64.exe"
+            )
+            break
 
-          # 13. Redis
-          try:
-              redis_res = requests.get('https://api.github.com/repos/redis-windows/redis-windows/releases/latest', headers=headers).json()
-              for asset in redis_res.get('assets', []):
-                  if '.msi' in asset['name']:
-                      links['Redis'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error Redis:", e)
+except Exception as e:
+    print("Error Python:", e)
 
-          # 14. Docker Desktop
-          links['DockerDesktop'] = "https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
 
-          # 15. WinRAR (Scraping fleksibel)
-          try:
-              rar_html = requests.get('https://www.rarlab.com/download.htm', headers=headers, timeout=30).text
-              match = re.search(r'winrar-x64-(\d+)\.exe', rar_html)
-              if match:
-                  links['WinRAR'] = f"https://www.rarlab.com/rar/winrar-x64-{match.group(1)}.exe"
-          except Exception as e: print("Error WinRAR scrape:", e)
+# 3. Go
+try:
+    go_res = requests.get(
+        "https://go.dev/VERSION?m=text",
+        headers=headers,
+        timeout=30,
+    ).text.strip()
 
-          # WinRAR FALLBACK
-          if 'WinRAR' not in links:
-              try:
-                  choco = requests.get("https://community.chocolatey.org/api/v2/Packages?$filter=Id eq 'winrar' and IsLatestVersion eq true", headers=headers, timeout=30).text
-                  vmatch = re.search(r'<d:Version>(\d+)\.(\d+)', choco)
-                  if vmatch:
-                      num = int(vmatch.group(1)) * 100 + int(vmatch.group(2))
-                      links['WinRAR'] = f"https://www.rarlab.com/rar/winrar-x64-{num}.exe"
-              except Exception as e: print("Error WinRAR fallback:", e)
+    go_version = go_res.split()[0]
 
-          # 16. Chocolatey
-          links['Chocolatey'] = "https://community.chocolatey.org/install.ps1"
+    links["Go"] = (
+        f"https://go.dev/dl/{go_version}.windows-amd64.msi"
+    )
 
-          # 17. Postman
-          links['Postman'] = "https://dl.pstmn.io/download/latest/win64"
+except Exception as e:
+    print("Error Go:", e)
 
-          # 18. 7-Zip
-          try:
-              zip_html = requests.get('https://www.7-zip.org/download.html', headers=headers, timeout=30).text
-              zip_match = re.search(r'href="(.*?-x64\.exe)"', zip_html)
-              if zip_match:
-                  links['7Zip'] = f"https://www.7-zip.org{zip_match.group(1)}"
-          except Exception as e: print("Error 7-Zip:", e)
 
-          # 19. ngrok
-          links['ngrok'] = "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip"
+# 4. Rust
+try:
+    rust_res = requests.get(
+        "https://api.github.com/repos/rust-lang/rust/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
 
-          # 20. Cloudflared
-          try:
-              cloud_res = requests.get('https://api.github.com/repos/cloudflare/cloudflared/releases/latest', headers=headers).json()
-              for asset in cloud_res.get('assets', []):
-                  if 'windows-amd64.msi' in asset['name']:
-                      links['Cloudflared'] = asset['browser_download_url']
-                      break
-          except Exception as e: print("Error Cloudflared:", e)
+    for asset in rust_res.get("assets", []):
+        if "x86_64-pc-windows-msvc.msi" in asset["name"]:
+            links["Rust"] = asset["browser_download_url"]
+            break
 
-          # Simpan links.json
-          with open('links.json', 'w', encoding='utf-8') as f:
-              json.dump(links, f, indent=4)
+except Exception as e:
+    print("Error Rust:", e)
 
-          # Generate README.md
-          timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
-          num_links = len(links)
-          table_rows = ""
-          
-          for name, url in links.items():
-              table_rows += f"| {name} | [Download]({url}) |\n"
 
-          with open('README.md', 'w', encoding='utf-8') as f:
-              f.write("# 🤖 BAHAN BOT RDP - ULTIMATE EDITION (Auto Installer)\n\n")
-              f.write("Repository berisi kumpulan link installer otomatis untuk persiapan *environment* Bot WhatsApp multi-bahasa di RDP Windows.\n")
-              f.write("Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!\n\n")
-              
-              f.write("## 📊 Statistik Repository\n\n")
-              f.write(f"- 🕒 **Terakhir Diupdate:** {timestamp}\n\n")
-              f.write(f"- 📦 **Jumlah Software Dilacak:** {num_links}\n\n")
-              f.write("- ✅ **Status Link:** Aktif & Valid\n\n")
-              
-              f.write("## 🌟 Fitur Unggulan\n\n")
-              f.write("- ✅ **Multi-Bahasa:** Node.js, Python, Go, Rust, Java, PHP, Ruby\n")
-              f.write("- ✅ **Database:** MongoDB, Redis\n")
-              f.write("- ✅ **Development Tools:** VS Code, Git, Postman, Docker\n")
-              f.write("- ✅ **Utilities:** FFmpeg, ImageMagick, WinRAR, 7-Zip\n")
-              f.write("- ✅ **Tunneling:** ngrok, Cloudflared\n")
-              f.write("- ✅ **Package Manager:** Chocolatey\n\n")
-              
-              f.write("### 📦 Daftar Software Otomatis\n\n")
-              f.write("| Software | Link Download |\n")
-              f.write("|---|---|\n")
-              f.write(table_rows)
-              f.write("\n---\n\n")
-              
-              f.write("## 🚀 Cara Install di RDP Windows\n\n")
-              f.write("### 🟦 Metode 1: PowerShell (Disarankan)\n\n")
-              f.write("```powershell\n")
-              f.write("Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1 | iex\n")
-              f.write("```\n\n")
+# 5. Java
+try:
+    java_res = requests.get(
+        "https://api.adoptium.net/v3/assets/latest/21/hotspot"
+        "?architecture=x64&image_type=jdk&os=windows&vendor=eclipse",
+        headers=headers,
+        timeout=30,
+    ).json()
 
-              f.write("### ⬛ Metode 2: Command Prompt (CMD)\n\n")
-              f.write("```cmd\n")
-              f.write("powershell -Command \"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/RusdiEneri/BAHANBOT_RDP/main/install-bahan.ps1' -OutFile '%TEMP%\\install-bahan.ps1'; powershell -ExecutionPolicy Bypass -File '%TEMP%\\install-bahan.ps1'\"\n")
-              f.write("```\n\n")
+    for item in java_res:
+        package_name = item["binary"]["package"]["name"]
 
-              f.write("### Metode 3: Pilih Manual (Untuk Developer)\n\n")
-              f.write("Download langsung dari tabel di atas sesuai kebutuhan:\n\n")
-              f.write("1. **Bot Python (Telegram/WhatsApp):** Install Python + Git\n")
-              f.write("2. **Bot Node.js (Baileys/WhatsApp):** Install Node.js + Git\n")
-              f.write("3. **Bot Go (High Performance):** Install Go + Git\n")
-              f.write("4. **Bot Java (Enterprise):** Install Java + Git\n")
-              f.write("5. **Bot PHP:** Install PHP + Composer\n\n")
-              
-              f.write("---\n\n")
-              
-              f.write("<details>\n")
-              f.write("<summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>\n\n")
-              f.write("- Workflow GitHub Actions mencari URL rilis terbaru setiap jam.\n\n")
-              f.write("- `links.json`: Database URL link terbaru.\n\n")
-              f.write("- `install-bahan.ps1`: Script PowerShell untuk instalasi otomatis.\n\n")
-              f.write("- README.md digenerate otomatis oleh GitHub Actions.\n\n")
-              f.write("</details>\n\n")
-              
-              f.write("---\n")
-              f.write("Made with ❤️ by RusdiEneri | Auto-Generated by GitHub Actions\n")
+        if "msi" in package_name:
+            links["JavaJDK"] = item["binary"]["package"]["link"]
+            break
 
-          print(f"SUCCESS: Generated {num_links} software links!")
-          PYEOF
+except Exception as e:
+    print("Error Java:", e)
+
+
+# 6. PHP
+try:
+    php_html = requests.get(
+        "https://windows.php.net/download/",
+        headers=headers,
+        timeout=30,
+    ).text
+
+    php_match = re.search(
+        r'VS16\s*x64\s*Thread Safe.*?href="(.*?\.zip)"',
+        php_html,
+        re.DOTALL,
+    )
+
+    if php_match:
+        links["PHP"] = (
+            f"https://windows.php.net{php_match.group(1)}"
+        )
+
+except Exception as e:
+    print("Error PHP:", e)
+
+
+# 7. Ruby
+try:
+    ruby_html = requests.get(
+        "https://rubyinstaller.org/downloads/",
+        headers=headers,
+        timeout=30,
+    ).text
+
+    ruby_match = re.search(
+        r'href="(.*?rubyinstaller-(\d+\.\d+\.\d+)-x64\.exe)"',
+        ruby_html,
+    )
+
+    if ruby_match:
+        links["Ruby"] = ruby_match.group(1)
+
+except Exception as e:
+    print("Error Ruby:", e)
+
+
+# ========== TOOL BOT DEVELOPMENT ==========
+
+# 8. Git for Windows
+try:
+    git_res = requests.get(
+        "https://api.github.com/repos/git-for-windows/git/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in git_res.get("assets", []):
+        if "64-bit.exe" in asset["name"]:
+            links["Git"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error Git:", e)
+
+
+# 9. FFmpeg
+try:
+    ff_res = requests.get(
+        "https://api.github.com/repos/BtbN/FFmpeg-Builds/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in ff_res.get("assets", []):
+        if (
+            "win64-gpl" in asset["name"]
+            and asset["name"].endswith(".zip")
+        ):
+            links["FFmpeg"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error FFmpeg:", e)
+
+
+# 10. ImageMagick
+try:
+    img_res = requests.get(
+        "https://api.github.com/repos/ImageMagick/ImageMagick/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in img_res.get("assets", []):
+        if "Q16-HDRI-x64-dll.exe" in asset["name"]:
+            links["ImageMagick"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error ImageMagick:", e)
+
+
+# 11. Visual Studio Code
+links["VSCode"] = (
+    "https://update.code.visualstudio.com/"
+    "latest/win32-x64-user/stable"
+)
+
+
+# 12. MongoDB
+try:
+    mongo_res = requests.get(
+        "https://api.github.com/repos/mongodb/mongo/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in mongo_res.get("assets", []):
+        if (
+            "windows-x86_64" in asset["name"]
+            and asset["name"].endswith(".zip")
+        ):
+            links["MongoDB"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error MongoDB:", e)
+
+
+# 13. Redis
+try:
+    redis_res = requests.get(
+        "https://api.github.com/repos/redis-windows/redis-windows/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in redis_res.get("assets", []):
+        if ".msi" in asset["name"]:
+            links["Redis"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error Redis:", e)
+
+
+# 14. Docker Desktop
+links["DockerDesktop"] = (
+    "https://desktop.docker.com/win/main/amd64/"
+    "Docker%20Desktop%20Installer.exe"
+)
+
+
+# 15. WinRAR
+try:
+    rar_html = requests.get(
+        "https://www.rarlab.com/download.htm",
+        headers=headers,
+        timeout=30,
+    ).text
+
+    match = re.search(
+        r"winrar-x64-(\d+)\.exe",
+        rar_html,
+    )
+
+    if match:
+        links["WinRAR"] = (
+            f"https://www.rarlab.com/rar/"
+            f"winrar-x64-{match.group(1)}.exe"
+        )
+
+except Exception as e:
+    print("Error WinRAR:", e)
+
+
+# WinRAR fallback
+if "WinRAR" not in links:
+    try:
+        choco = requests.get(
+            "https://community.chocolatey.org/api/v2/Packages"
+            "?$filter=Id%20eq%20%27winrar%27%20and%20IsLatestVersion%20eq%20true",
+            headers=headers,
+            timeout=30,
+        ).text
+
+        vmatch = re.search(
+            r"<d:Version>(\d+)\.(\d+)",
+            choco,
+        )
+
+        if vmatch:
+            num = (
+                int(vmatch.group(1)) * 100
+                + int(vmatch.group(2))
+            )
+
+            links["WinRAR"] = (
+                f"https://www.rarlab.com/rar/"
+                f"winrar-x64-{num}.exe"
+            )
+
+    except Exception as e:
+        print("Error WinRAR fallback:", e)
+
+
+# 16. Chocolatey
+links["Chocolatey"] = (
+    "https://community.chocolatey.org/install.ps1"
+)
+
+
+# 17. Postman
+links["Postman"] = (
+    "https://dl.pstmn.io/download/latest/win64"
+)
+
+
+# 18. 7-Zip
+try:
+    zip_html = requests.get(
+        "https://www.7-zip.org/download.html",
+        headers=headers,
+        timeout=30,
+    ).text
+
+    zip_match = re.search(
+        r'href="(.*?-x64\.exe)"',
+        zip_html,
+    )
+
+    if zip_match:
+        links["7Zip"] = (
+            f"https://www.7-zip.org{zip_match.group(1)}"
+        )
+
+except Exception as e:
+    print("Error 7-Zip:", e)
+
+
+# 19. ngrok
+links["ngrok"] = (
+    "https://bin.equinox.io/c/bNyj1mQVY4c/"
+    "ngrok-v3-stable-windows-amd64.zip"
+)
+
+
+# 20. Cloudflared
+try:
+    cloud_res = requests.get(
+        "https://api.github.com/repos/cloudflare/cloudflared/releases/latest",
+        headers=headers,
+        timeout=30,
+    ).json()
+
+    for asset in cloud_res.get("assets", []):
+        if "windows-amd64.msi" in asset["name"]:
+            links["Cloudflared"] = asset["browser_download_url"]
+            break
+
+except Exception as e:
+    print("Error Cloudflared:", e)
+
+
+# ==========================================
+# Save links.json
+# ==========================================
+
+with open("links.json", "w", encoding="utf-8") as f:
+    json.dump(links, f, indent=4)
+
+
+# ==========================================
+# Generate README.md
+# ==========================================
+
+timestamp = datetime.datetime.now(
+    datetime.timezone.utc
+).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+num_links = len(links)
+
+table_rows = ""
+
+for name, url in links.items():
+    table_rows += (
+        f"| {name} | [Download]({url}) |\n"
+    )
+
+
+with open("README.md", "w", encoding="utf-8") as f:
+    f.write(
+        "# 🤖 BAHAN BOT RDP - ULTIMATE EDITION "
+        "(Auto Installer)\n\n"
+    )
+
+    f.write(
+        "Repository berisi kumpulan link installer otomatis "
+        "untuk persiapan *environment* Bot WhatsApp "
+        "multi-bahasa di RDP Windows.\n"
+    )
+
+    f.write(
+        "Mendukung **Node.js, Python, Go, Rust, Java, PHP**, "
+        "dan banyak lagi!\n\n"
+    )
+
+    f.write("## 📊 Statistik Repository\n\n")
+    f.write(
+        f"- 🕒 **Terakhir Diupdate:** {timestamp}\n\n"
+    )
+    f.write(
+        f"- 📦 **Jumlah Software Dilacak:** {num_links}\n\n"
+    )
+    f.write(
+        "- ✅ **Status Link:** Aktif & Valid\n\n"
+    )
+
+    f.write("## 🌟 Fitur Unggulan\n\n")
+    f.write(
+        "- ✅ **Multi-Bahasa:** Node.js, Python, Go, Rust, "
+        "Java, PHP, Ruby\n"
+    )
+    f.write(
+        "- ✅ **Database:** MongoDB, Redis\n"
+    )
+    f.write(
+        "- ✅ **Development Tools:** VS Code, Git, Postman, Docker\n"
+    )
+    f.write(
+        "- ✅ **Utilities:** FFmpeg, ImageMagick, WinRAR, 7-Zip\n"
+    )
+    f.write(
+        "- ✅ **Tunneling:** ngrok, Cloudflared\n"
+    )
+    f.write(
+        "- ✅ **Package Manager:** Chocolatey\n\n"
+    )
+
+    f.write("### 📦 Daftar Software Otomatis\n\n")
+    f.write("| Software | Link Download |\n")
+    f.write("|---|---|\n")
+    f.write(table_rows)
+    f.write("\n---\n\n")
+
+    f.write("## 🚀 Cara Install di RDP Windows\n\n")
+
+    f.write("### 🟦 Metode 1: PowerShell (Disarankan)\n\n")
+    f.write("```powershell\n")
+    f.write(
+        "Set-ExecutionPolicy Bypass -Scope Process -Force; "
+        "iwr -useb "
+        "https://raw.githubusercontent.com/RusdiEneri/"
+        "BAHANBOT_RDP/main/install-bahan.ps1 | iex\n"
+    )
+    f.write("```\n\n")
+
+    f.write("### ⬛ Metode 2: Command Prompt (CMD)\n\n")
+    f.write("```cmd\n")
+    f.write(
+        "powershell -Command "
+        "\"[Net.ServicePointManager]::SecurityProtocol = "
+        "[Net.SecurityProtocolType]::Tls12; "
+        "Invoke-WebRequest -Uri "
+        "'https://raw.githubusercontent.com/RusdiEneri/"
+        "BAHANBOT_RDP/main/install-bahan.ps1' "
+        "-OutFile '%TEMP%\\install-bahan.ps1'; "
+        "powershell -ExecutionPolicy Bypass "
+        "-File '%TEMP%\\install-bahan.ps1'\"\n"
+    )
+    f.write("```\n\n")
+
+    f.write(
+        "### Metode 3: Pilih Manual (Untuk Developer)\n\n"
+    )
+
+    f.write(
+        "Download langsung dari tabel di atas sesuai kebutuhan:\n\n"
+    )
+
+    f.write(
+        "1. **Bot Python (Telegram/WhatsApp):** "
+        "Install Python + Git\n"
+    )
+    f.write(
+        "2. **Bot Node.js (Baileys/WhatsApp):** "
+        "Install Node.js + Git\n"
+    )
+    f.write(
+        "3. **Bot Go (High Performance):** "
+        "Install Go + Git\n"
+    )
+    f.write(
+        "4. **Bot Java (Enterprise):** "
+        "Install Java + Git\n"
+    )
+    f.write(
+        "5. **Bot PHP:** Install PHP + Composer\n\n"
+    )
+
+    f.write("---\n\n")
+
+    f.write("<details>\n")
+    f.write(
+        "<summary><strong>🛠️ Cara Kerja Repo Ini</strong></summary>\n\n"
+    )
+    f.write(
+        "- Workflow GitHub Actions mencari URL rilis terbaru "
+        "setiap jam.\n\n"
+    )
+    f.write(
+        "- `links.json`: Database URL link terbaru.\n\n"
+    )
+    f.write(
+        "- `install-bahan.ps1`: Script PowerShell untuk "
+        "instalasi otomatis.\n\n"
+    )
+    f.write(
+        "- README.md digenerate otomatis oleh GitHub Actions.\n\n"
+    )
+    f.write("</details>\n\n")
+
+    f.write("---\n")
+    f.write(
+        "Made with ❤️ by RusdiEneri | "
+        "Auto-Generated by GitHub Actions\n"
+    )
+
+print(
+    f"SUCCESS: Generated {num_links} software links!"
+)
+PYEOF
+
           python3 generate.py
 
-      - name: Commit and Push Changes
+      - name: "Check Generated Files"
+        shell: bash
         run: |
-          git config --global user.name 'RusdiEneri'
-          git config --global user.email 'nuruddinrusydiilham@gmail.com'
-          git add links.json README.md
-          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          git commit -m "Update link & Statistik README - $TIMESTAMP [skip ci]" --allow-empty
-          
-          # Ambil nama branch saat ini, fallback ke 'main' jika kosong
-          BRANCH=$(git branch --show-current)
-          if [ -z "$BRANCH" ]; then BRANCH="main"; fi
-          
-          # Tarik perubahan terbaru dari remote. Jika ada konflik, paksa gunakan file hasil generate
-          if ! git pull --rebase origin $BRANCH; then
-            echo "Konflik terdeteksi, menggunakan file hasil generate..."
-            git checkout --ours links.json README.md || true
-            git add links.json README.md
-            GIT_EDITOR=true git rebase --continue
+          set -Eeuo pipefail
+
+          echo "📄 links.json:"
+          ls -lh links.json
+
+          echo
+          echo "📄 README.md:"
+          ls -lh README.md
+
+          echo
+          echo "📊 Git status:"
+          git status --short
+
+      - name: "Configure SSH Signing"
+        if: always()
+        env:
+          SIGNING_KEY: ${{ secrets.COMMIT_SIGNING_KEY }}
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          if [[ -z "${SIGNING_KEY:-}" ]]; then
+            echo "::error::Secret COMMIT_SIGNING_KEY tidak ditemukan atau kosong."
+            exit 1
           fi
-          
-          git push
+
+          KEY_DIR="${RUNNER_TEMP}/git-signing"
+          PRIVATE_KEY="${KEY_DIR}/signing_key"
+          PUBLIC_KEY="${KEY_DIR}/signing_key.pub"
+          ALLOWED_SIGNERS="${KEY_DIR}/allowed_signers"
+
+          mkdir -p "$KEY_DIR"
+          chmod 700 "$KEY_DIR"
+
+          printf '%s\n' "$SIGNING_KEY" > "$PRIVATE_KEY"
+          chmod 600 "$PRIVATE_KEY"
+
+          # Generate public key dari private key
+          ssh-keygen -y \
+            -f "$PRIVATE_KEY" \
+            > "$PUBLIC_KEY"
+
+          chmod 644 "$PUBLIC_KEY"
+
+          if [[ ! -s "$PUBLIC_KEY" ]]; then
+            echo "::error::Gagal membuat public signing key."
+            exit 1
+          fi
+
+          # SSH agent
+          eval "$(ssh-agent -s)"
+          ssh-add "$PRIVATE_KEY"
+
+          # Git identity
+          git config --local user.name "RusdiEneri"
+          git config --local user.email "nuruddinrusydiilham@gmail.com"
+
+          # SSH signing
+          git config --local gpg.format ssh
+          git config --local gpg.ssh.program ssh-keygen
+
+          PUBLIC_KEY_DATA="$(cat "$PUBLIC_KEY")"
+
+          git config --local \
+            user.signingkey \
+            "key::${PUBLIC_KEY_DATA}"
+
+          git config --local commit.gpgsign true
+
+          # Local verification
+          printf '%s %s\n' \
+            "nuruddinrusydiilham@gmail.com" \
+            "$PUBLIC_KEY_DATA" \
+            > "$ALLOWED_SIGNERS"
+
+          chmod 644 "$ALLOWED_SIGNERS"
+
+          git config --local \
+            gpg.ssh.allowedSignersFile \
+            "$ALLOWED_SIGNERS"
+
+          echo "✅ SSH signing siap."
+
+      - name: "Commit and Push Verified"
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+
+          # Stage generated files
+          git add links.json README.md
+
+          # Jangan buat commit kalau memang tidak ada perubahan.
+          if git diff --cached --quiet; then
+            echo "ℹ️ Tidak ada perubahan data."
+            exit 0
+          fi
+
+          # ==========================================
+          # Signed commit
+          # ==========================================
+
+          TIMESTAMP="$(TZ=Asia/Jakarta date '+%Y-%m-%d %H:%M:%S WIB')"
+
+          git commit -S \
+            -m "chore: update link & Statistik README - ${TIMESTAMP}"
+
+          echo
+          echo "✅ Signed commit berhasil dibuat."
+
+          # ==========================================
+          # Verifikasi signature sebelum push
+          # ==========================================
+
+          echo
+          echo "🔏 Verifying signature..."
+
+          git verify-commit HEAD
+
+          echo
+          echo "✅ Signature valid."
+
+          # ==========================================
+          # Push dengan retry
+          # ==========================================
+
+          for attempt in 1 2 3 4 5; do
+            echo
+            echo "========================================"
+            echo "🚀 Push attempt ${attempt}/5"
+            echo "========================================"
+
+            if git push origin HEAD:main; then
+              echo "✅ Push berhasil."
+              exit 0
+            fi
+
+            echo "⚠️ Push ditolak. Remote mungkin berubah."
+
+            if [[ "$attempt" -eq 5 ]]; then
+              break
+            fi
+
+            echo "🔄 Fetch origin/main..."
+            git fetch origin main
+
+            echo "🔐 Rebase + sign ulang..."
+            git rebase --gpg-sign origin/main
+
+            echo "🔏 Verifikasi signature setelah rebase..."
+            git verify-commit HEAD
+
+            echo
+            echo "⏳ Menunggu 5 detik..."
+            sleep 5
+          done
+
+          echo "::error::Gagal push setelah 5 percobaan."
+          exit 1
