@@ -691,37 +691,118 @@ jobs:
           echo "✅ SSH signing siap."
 
       - name: "Commit and Push Verified"
+        if: success()
+        env:
+          SIGNING_KEY: ${{ secrets.COMMIT_SIGNING_KEY }}
         shell: bash
         run: |
           set -Eeuo pipefail
 
-          # Stage generated files
+          # ==========================================
+          # 1. Validasi signing key
+          # ==========================================
+          if [[ -z "${SIGNING_KEY:-}" ]]; then
+            echo "::error::Secret COMMIT_SIGNING_KEY tidak ditemukan atau kosong."
+            exit 1
+          fi
+
+          # ==========================================
+          # 2. Stage hasil generate
+          # ==========================================
           git add links.json README.md
 
-          # Jangan buat commit kalau memang tidak ada perubahan.
           if git diff --cached --quiet; then
             echo "ℹ️ Tidak ada perubahan data."
             exit 0
           fi
 
           # ==========================================
-          # Signed commit
+          # 3. Siapkan SSH signing key
           # ==========================================
+          KEY_DIR="${RUNNER_TEMP}/git-signing"
+          PRIVATE_KEY="${KEY_DIR}/signing_key"
+          PUBLIC_KEY="${KEY_DIR}/signing_key.pub"
+          ALLOWED_SIGNERS="${KEY_DIR}/allowed_signers"
 
+          mkdir -p "$KEY_DIR"
+          chmod 700 "$KEY_DIR"
+
+          printf '%s\n' "$SIGNING_KEY" > "$PRIVATE_KEY"
+          chmod 600 "$PRIVATE_KEY"
+
+          # Generate public key dari private key
+          ssh-keygen -y \
+            -f "$PRIVATE_KEY" \
+            > "$PUBLIC_KEY"
+
+          chmod 644 "$PUBLIC_KEY"
+
+          if [[ ! -s "$PUBLIC_KEY" ]]; then
+            echo "::error::Gagal membuat public signing key."
+            exit 1
+          fi
+
+          # ==========================================
+          # 4. Jalankan SSH agent
+          # ==========================================
+          eval "$(ssh-agent -s)"
+
+          ssh-add "$PRIVATE_KEY"
+
+          echo "✅ SSH agent aktif."
+
+          # ==========================================
+          # 5. Configure Git identity
+          # ==========================================
+          git config --local user.name "RusdiEneri"
+          git config --local user.email "nuruddinrusydiilham@gmail.com"
+
+          # ==========================================
+          # 6. Configure SSH commit signing
+          # ==========================================
+          git config --local gpg.format ssh
+          git config --local gpg.ssh.program ssh-keygen
+
+          PUBLIC_KEY_DATA="$(cat "$PUBLIC_KEY")"
+
+          git config --local \
+            user.signingkey \
+            "key::${PUBLIC_KEY_DATA}"
+
+          git config --local commit.gpgsign true
+
+          # ==========================================
+          # 7. Allowed signers untuk local verification
+          # ==========================================
+          printf '%s %s\n' \
+            "nuruddinrusydiilham@gmail.com" \
+            "$PUBLIC_KEY_DATA" \
+            > "$ALLOWED_SIGNERS"
+
+          chmod 644 "$ALLOWED_SIGNERS"
+
+          git config --local \
+            gpg.ssh.allowedSignersFile \
+            "$ALLOWED_SIGNERS"
+
+          echo "✅ SSH commit signing aktif."
+
+          # ==========================================
+          # 8. Buat signed commit
+          # ==========================================
           TIMESTAMP="$(TZ=Asia/Jakarta date '+%Y-%m-%d %H:%M:%S WIB')"
 
           git commit -S \
-            -m "chore: update link & Statistik README - ${TIMESTAMP}"
+            -m "chore: update link & Statistik README - ${TIMESTAMP} [skip ci]"
 
           echo
           echo "✅ Signed commit berhasil dibuat."
 
           # ==========================================
-          # Verifikasi signature sebelum push
+          # 9. Verifikasi signature
           # ==========================================
-
           echo
-          echo "🔏 Verifying signature..."
+          echo "🔏 Verifying commit signature..."
 
           git verify-commit HEAD
 
@@ -729,9 +810,8 @@ jobs:
           echo "✅ Signature valid."
 
           # ==========================================
-          # Push dengan retry
+          # 10. Push dengan retry
           # ==========================================
-
           for attempt in 1 2 3 4 5; do
             echo
             echo "========================================"
@@ -743,23 +823,28 @@ jobs:
               exit 0
             fi
 
+            echo
             echo "⚠️ Push ditolak. Remote mungkin berubah."
 
             if [[ "$attempt" -eq 5 ]]; then
               break
             fi
 
+            echo
             echo "🔄 Fetch origin/main..."
             git fetch origin main
 
+            echo
             echo "🔐 Rebase + sign ulang..."
             git rebase --gpg-sign origin/main
 
+            echo
             echo "🔏 Verifikasi signature setelah rebase..."
             git verify-commit HEAD
 
             echo
-            echo "⏳ Menunggu 5 detik..."
+            echo "✅ Signature setelah rebase valid."
+
             sleep 5
           done
 
