@@ -691,10 +691,9 @@ jobs:
           echo "✅ SSH signing siap."
 
       - name: "Commit and Push Verified"
-        if: success()
+        shell: bash
         env:
           SIGNING_KEY: ${{ secrets.COMMIT_SIGNING_KEY }}
-        shell: bash
         run: |
           set -Eeuo pipefail
 
@@ -707,7 +706,7 @@ jobs:
           fi
 
           # ==========================================
-          # 2. Stage hasil generate
+          # 2. Stage generated files
           # ==========================================
           git add links.json README.md
 
@@ -730,7 +729,7 @@ jobs:
           printf '%s\n' "$SIGNING_KEY" > "$PRIVATE_KEY"
           chmod 600 "$PRIVATE_KEY"
 
-          # Generate public key dari private key
+          # Buat public key dari private key
           ssh-keygen -y \
             -f "$PRIVATE_KEY" \
             > "$PUBLIC_KEY"
@@ -738,12 +737,12 @@ jobs:
           chmod 644 "$PUBLIC_KEY"
 
           if [[ ! -s "$PUBLIC_KEY" ]]; then
-            echo "::error::Gagal membuat public signing key."
+            echo "::error::Public signing key gagal dibuat."
             exit 1
           fi
 
           # ==========================================
-          # 4. Jalankan SSH agent
+          # 4. SSH agent
           # ==========================================
           eval "$(ssh-agent -s)"
 
@@ -752,13 +751,13 @@ jobs:
           echo "✅ SSH agent aktif."
 
           # ==========================================
-          # 5. Configure Git identity
+          # 5. Git identity
           # ==========================================
           git config --local user.name "RusdiEneri"
           git config --local user.email "nuruddinrusydiilham@gmail.com"
 
           # ==========================================
-          # 6. Configure SSH commit signing
+          # 6. SSH commit signing
           # ==========================================
           git config --local gpg.format ssh
           git config --local gpg.ssh.program ssh-keygen
@@ -772,7 +771,7 @@ jobs:
           git config --local commit.gpgsign true
 
           # ==========================================
-          # 7. Allowed signers untuk local verification
+          # 7. Allowed signers
           # ==========================================
           printf '%s %s\n' \
             "nuruddinrusydiilham@gmail.com" \
@@ -785,7 +784,7 @@ jobs:
             gpg.ssh.allowedSignersFile \
             "$ALLOWED_SIGNERS"
 
-          echo "✅ SSH commit signing aktif."
+          echo "✅ SSH commit signing siap."
 
           # ==========================================
           # 8. Buat signed commit
@@ -824,7 +823,7 @@ jobs:
             fi
 
             echo
-            echo "⚠️ Push ditolak. Remote mungkin berubah."
+            echo "⚠️ Push ditolak. Remote kemungkinan berubah."
 
             if [[ "$attempt" -eq 5 ]]; then
               break
@@ -843,7 +842,7 @@ jobs:
             git verify-commit HEAD
 
             echo
-            echo "✅ Signature setelah rebase valid."
+            echo "✅ Signature tetap valid."
 
             sleep 5
           done
