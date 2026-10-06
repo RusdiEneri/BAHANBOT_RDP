@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-10-06 05:01:26 UTC
+- 🕒 **Terakhir Diupdate:** 2026-10-06 12:48:10 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -35,7 +35,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | WinRAR | [Download](https://www.rarlab.com/rar/winrar-x64-723.exe) |
 | Chocolatey | [Download](https://community.chocolatey.org/install.ps1) |
 | Postman | [Download](https://dl.pstmn.io/download/latest/win64) |
-| 7Zip | [Download](https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.03/7z2603-x64.exe) |
+| 7Zip | [Download](https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.04/7z2604-x64.exe) |
 | ngrok | [Download](https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip) |
 | Cloudflared | [Download](https://github.com/cloudflare/cloudflared/releases/download/2026.10.0/cloudflared-windows-amd64.msi) |
 
