@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-10-10 02:06:14 UTC
+- 🕒 **Terakhir Diupdate:** 2026-10-10 09:26:52 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -25,7 +25,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | Software | Link Download |
 |---|---|
 | NodeJS | [Download](https://nodejs.org/dist/v24.21.0/node-v24.21.0-x64.msi) |
-| Python | [Download](https://www.python.org/ftp/python/3.14.8/python-3.14.8-amd64.exe) |
+| Python | [Download](https://www.python.org/ftp/python/3.15.0/python-3.15.0-amd64.exe) |
 | Go | [Download](https://go.dev/dl/go1.27.2.windows-amd64.msi) |
 | Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.2/Git-2.56.0.2-64-bit.exe) |
 | FFmpeg | [Download](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
