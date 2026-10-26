@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-10-26 09:44:49 UTC
+- 🕒 **Terakhir Diupdate:** 2026-10-26 16:31:19 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -37,7 +37,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | Postman | [Download](https://dl.pstmn.io/download/latest/win64) |
 | 7Zip | [Download](https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.05/7z2605-x64.exe) |
 | ngrok | [Download](https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip) |
-| Cloudflared | [Download](https://github.com/cloudflare/cloudflared/releases/download/2026.10.3/cloudflared-windows-amd64.msi) |
+| Cloudflared | [Download](https://github.com/cloudflare/cloudflared/releases/download/2026.10.4/cloudflared-windows-amd64.msi) |
 
 ---
 
