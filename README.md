@@ -5,7 +5,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-10-26 03:22:02 UTC
+- 🕒 **Terakhir Diupdate:** 2026-10-26 09:44:49 UTC
 
 - 📦 **Jumlah Software Dilacak:** 14
 
@@ -25,9 +25,9 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | Software | Link Download |
 |---|---|
 | NodeJS | [Download](https://nodejs.org/dist/v24.22.1/node-v24.22.1-x64.msi) |
-| Python | [Download](https://www.python.org/ftp/python/3.15.1/python-3.15.1-amd64.exe) |
+| Python | [Download](https://www.python.org/ftp/python/3.15.2/python-3.15.2-amd64.exe) |
 | Go | [Download](https://go.dev/dl/go1.27.3.windows-amd64.msi) |
-| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.3/Git-2.56.0.3-64-bit.exe) |
+| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.56.0.windows.4/Git-2.56.0.4-64-bit.exe) |
 | FFmpeg | [Download](https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
 | ImageMagick | [Download](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-34/ImageMagick-7.1.2-34-Q16-HDRI-x64-dll.exe) |
 | VSCode | [Download](https://update.code.visualstudio.com/latest/win32-x64-user/stable) |
