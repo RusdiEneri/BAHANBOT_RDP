@@ -5,9 +5,9 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 
 ## 📊 Statistik Repository
 
-- 🕒 **Terakhir Diupdate:** 2026-11-22 10:44:45 UTC
+- 🕒 **Terakhir Diupdate:** 2026-11-22 18:14:43 UTC
 
-- 📦 **Jumlah Software Dilacak:** 10
+- 📦 **Jumlah Software Dilacak:** 14
 
 - ✅ **Status Link:** Aktif & Valid
 
@@ -27,6 +27,9 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | NodeJS | [Download](https://nodejs.org/dist/v26.13.1/node-v26.13.1-x64.msi) |
 | Python | [Download](https://www.python.org/ftp/python/3.15.2/python-3.15.2-amd64.exe) |
 | Go | [Download](https://go.dev/dl/go1.27.4.windows-amd64.msi) |
+| Git | [Download](https://github.com/git-for-windows/git/releases/download/v2.56.1.windows.1/Git-2.56.1-64-bit.exe) |
+| FFmpeg | [Download](https://github.com/FFmpeg-Builds/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip) |
+| ImageMagick | [Download](https://github.com/ImageMagick/ImageMagick/releases/download/7.1.2-36/ImageMagick-7.1.2-36-Q16-HDRI-x64-dll.exe) |
 | VSCode | [Download](https://update.code.visualstudio.com/latest/win32-x64-user/stable) |
 | DockerDesktop | [Download](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe) |
 | WinRAR | [Download](https://www.rarlab.com/rar/winrar-x64-723.exe) |
@@ -34,6 +37,7 @@ Mendukung **Node.js, Python, Go, Rust, Java, PHP**, dan banyak lagi!
 | Postman | [Download](https://dl.pstmn.io/download/latest/win64) |
 | 7Zip | [Download](https://www.7-zip.orghttps://github.com/ip7z/7zip/releases/download/26.06/7z2606-x64.exe) |
 | ngrok | [Download](https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip) |
+| Cloudflared | [Download](https://github.com/cloudflare/cloudflared/releases/download/2026.11.1/cloudflared-windows-amd64.msi) |
 
 ---
 
